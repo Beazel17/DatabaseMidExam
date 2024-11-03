@@ -5,43 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alcohol POS Dashboard</title>
     <style>
-        /* Basic CSS for layout */
+        /* Global styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #121212;
+            color: #f1f1f1;
         }
+
+        /* Navbar styles */
         .navbar {
-            background-color: #333;
-            color: white;
+            background-color: #000;
+            color: #f1f1f1;
             padding: 1em;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+
         .navbar .logo {
             font-weight: bold;
+            color: #f05454;
         }
+
         .navbar a {
-            color: white;
+            color: #f05454;
             margin-left: 1em;
             text-decoration: none;
+            transition: color 0.3s;
         }
+
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
+        /* Dashboard content styles */
         .dashboard {
             padding: 2em;
+            max-width: 600px;
+            margin: auto;
         }
+
+        .dashboard h1 {
+            color: #f05454;
+        }
+
         .product-selection, .checkout {
             margin-top: 20px;
+            background-color: #1f1f1f;
+            padding: 15px;
+            border-radius: 8px;
         }
+
+        .product-selection label, .checkout label {
+            color: #f1f1f1;
+            font-weight: bold;
+        }
+
         .product-selection select, .product-selection input, .checkout input {
-            padding: 8px;
-            margin-top: 5px;
+            padding: 10px;
+            margin-top: 10px;
             width: 100%;
+            background-color: #333;
+            color: #f1f1f1;
+            border: 1px solid #444;
+            border-radius: 5px;
         }
+
+        /* Checkout button styles */
+        .checkout button {
+            background-color: #f05454;
+            color: #f1f1f1;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .checkout button:hover {
+            background-color: #ff4e4e;
+        }
+
+        /* Message styles */
         .warning {
-            color: red;
             font-weight: bold;
             margin-top: 10px;
+        }
+
+        .warning.success {
+            color: #4caf50;
+        }
+
+        .warning.error {
+            color: #f05454;
         }
     </style>
 </head>

@@ -45,51 +45,94 @@ $unionTransactions = fetchUnionTransactions();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
     <style>
+        /* Global styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #121212;
+            color: #f1f1f1;
         }
+
+        /* Navbar styles */
         .navbar {
-            background-color: #333;
-            color: white;
+            background-color: #000;
+            color: #f1f1f1;
             padding: 1em;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+
         .navbar .logo {
             font-weight: bold;
+            color: #f05454;
         }
+
         .navbar a {
-            color: white;
+            color: #f05454;
             margin-left: 1em;
             text-decoration: none;
+            transition: color 0.3s;
         }
+
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
+        /* Container and button styles */
         .container {
             padding: 2em;
+            max-width: 800px;
+            margin: auto;
         }
+
         .button-container {
             margin-bottom: 20px;
         }
+
         button {
-            margin-right: 10px;
+            background-color: #f05454;
+            color: #f1f1f1;
             padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+
+        button:hover {
+            background-color: #ff4e4e;
+        }
+
+        /* Table styles */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #1f1f1f;
+            border: 1px solid #444;
+            border-radius: 8px;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
+            color: #f1f1f1;
         }
+
         th {
-            background-color: #f2f2f2;
+            background-color: #333;
+            color: #f05454;
         }
+
+        tr:nth-child(even) {
+            background-color: #2b2b2b;
+        }
+
+        /* Hidden class */
         .hidden {
             display: none;
         }
@@ -199,7 +242,6 @@ $unionTransactions = fetchUnionTransactions();
         document.getElementById(tableName).classList.remove('hidden');
     }
 
-    // Show the left join table by default
     showTable('leftJoin');
 </script>
 

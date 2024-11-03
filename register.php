@@ -100,8 +100,50 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 360px; padding: 20px; }
+         body {
+            font: 14px sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* White text */
+        }
+        .wrapper {
+            width: 360px;
+            padding: 20px;
+            background-color: #1e1e1e; /* Slightly lighter dark background */
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.3); /* Red glow */
+            margin: auto;
+            margin-top: 100px;
+        }
+        h2, p {
+            color: #ff3333; /* Red headings */
+        }
+        .form-control {
+            background-color: #2e2e2e;
+            color: #ffffff;
+            border: 1px solid #ff3333; /* Red border */
+        }
+        .form-control:focus {
+            border-color: #ff6666;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+        }
+        .btn-primary {
+            background-color: #ff3333;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #ff6666;
+        }
+        .alert-danger {
+            background-color: #ff3333;
+            color: #ffffff;
+            border: none;
+        }
+        a {
+            color: #ff6666;
+        }
+        a:hover {
+            color: #ff3333;
+        }
     </style>
 </head>
 <body>
