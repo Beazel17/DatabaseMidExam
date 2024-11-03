@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "../../db/config.php";
+require_once "config.php";
  
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = "";
@@ -78,7 +78,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if($stmt->execute()){
                 // Redirect to login page
-                header("location: ../../index.php");
+                header("location: index.php");
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -100,88 +100,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-          body {
-    font-family: Arial, sans-serif;
-    background-image: url('../../media/regesterbg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.wrapper {
-    width: 360px;
-    padding: 30px;
-    background-color: #fff; /* White background */
-    border-radius: 20px;
-    box-shadow: 0px 0px 30px rgba(255, 69, 0, 0.7), 0 0 0 4px black; /* Orange shadow and black border */
-    background-image: url('../../media/pirate.jpg'); /* Background image */
-    background-size: cover;
-    background-position: center;
-}
-
-
-        .wrapper h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: white; /* Hard black text */
-            font-weight: bold; /* Bold font */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow */
-            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            color: white; /* Hard black text */
-            font-weight: bold; /* Bold font */
-            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-        }
-
-        .form-control {
-            border-color: orange; /* Light gray border */
-            font-weight: bold; /* Bold font */
-        }
-
-        .form-control:focus {
-            border-color: orange; /* Blue border when focused */
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Focus effect */
-        }
-
-        .btn-primary {
-            background-color: orange; /* Blue button */
-            border-color: black;
-            font-weight: bold; /* Bold font */
-        }
-
-        .btn-primary:hover {
-            background-color: orange; /* Darker blue on hover */
-            border-color: #0056b3;
-        }
-
-        .alert {
-            margin-top: 20px;
-        }
-        p {
-    font-weight: bold;
-    color: white;
-    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-}
-
-
-        a {
-             font-weight: bold;
-             color: orange;
-             text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-        } 
-        
-
+        body{ font: 14px sans-serif; }
+        .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
@@ -208,7 +128,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="submit" class="btn btn-primary" value="Submit">
                 <input type="reset" class="btn btn-secondary ml-2" value="Reset">
             </div>
-            <p>Already have an account? <a href="../../index.php">Login here</a>.</p>
+            <p>Already have an account? <a href="index.php">Login here</a>.</p>
         </form>
     </div>    
 </body>
