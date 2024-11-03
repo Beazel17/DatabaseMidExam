@@ -50,6 +50,22 @@ $unionTransactions = fetchUnionTransactions();
             margin: 0;
             padding: 0;
         }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            font-weight: bold;
+        }
+        .navbar a {
+            color: white;
+            margin-left: 1em;
+            text-decoration: none;
+        }
         .container {
             padding: 2em;
         }
@@ -80,6 +96,16 @@ $unionTransactions = fetchUnionTransactions();
     </style>
 </head>
 <body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">Alcohol POS</div>
+    <div>
+        <a href="history.php">History Log</a>
+        <a href="dashboard.php">Home</a>
+        <a href="logout.php">Logout</a>
+    </div>
+</div>
 
 <div class="container">
     <h1>Transaction History</h1>

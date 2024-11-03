@@ -51,7 +51,7 @@
 <div class="navbar">
     <div class="logo">Alcohol POS</div>
     <div>
-        <a href="#history">History Log</a>
+        <a href="history.php">History Log</a>
         <a href="dashboard.php">Home</a>
         <a href="logout.php">Logout</a>
     </div>
