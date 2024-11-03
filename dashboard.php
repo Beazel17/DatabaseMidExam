@@ -1,134 +1,137 @@
-<?php
-session_start();
-include 'config.php'; // Assume a separate file to handle database connection
-
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit();
-}
-
-// Fetch user details
-$userId = $_SESSION['user_id'];
-$userQuery = $db->prepare("SELECT * FROM users WHERE id = ?");
-$userQuery->execute([$userId]);
-$user = $userQuery->fetch();
-
-// Fetch products
-$productsQuery = $db->query("SELECT * FROM products");
-$products = $productsQuery->fetchAll();
-
-// Handle purchase
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'], $_POST['quantity'], $_POST['payment'])) {
-    $productId = $_POST['product_id'];
-    $quantity = $_POST['quantity'];
-    $payment = $_POST['payment'];
-
-    // Get product details
-    $productQuery = $db->prepare("SELECT * FROM products WHERE id = ?");
-    $productQuery->execute([$productId]);
-    $product = $productQuery->fetch();
-
-    if ($product) {
-        $totalCost = $product['price'] * $quantity;
-
-        // Check stock and payment
-        if ($quantity > $product['stock']) {
-            echo "<p style='color:red;'>Not enough stock available.</p>";
-        } elseif ($payment < $totalCost) {
-            echo "<p style='color:red;'>Insufficient payment. Total cost is $totalCost.</p>";
-        } else {
-            // Deduct stock and record transaction
-            $newStock = $product['stock'] - $quantity;
-            $updateStockQuery = $db->prepare("UPDATE products SET stock = ? WHERE id = ?");
-            $updateStockQuery->execute([$newStock, $productId]);
-
-            $insertTransaction = $db->prepare("
-                INSERT INTO transactions (user_id, product_id, quantity, total_amount, payment)
-                VALUES (?, ?, ?, ?, ?)
-            ");
-            $insertTransaction->execute([$userId, $productId, $quantity, $totalCost, $payment]);
-
-            echo "<p style='color:green;'>Purchase successful!</p>";
-        }
-    }
-}
-
-// Fetch transaction history
-$historyQuery = $db->query("
-    SELECT u.username, p.name as product_name, t.quantity, t.total_amount, t.payment, t.created_at 
-    FROM transactions t
-    LEFT JOIN users u ON t.user_id = u.id
-    LEFT JOIN products p ON t.product_id = p.id
-    ORDER BY t.created_at DESC
-");
-$history = $historyQuery->fetchAll();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alcohol POS Dashboard</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { padding: 8px 12px; border: 1px solid #ccc; text-align: center; }
-        .button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
-        .button:hover { background: #0056b3; }
+        /* Basic CSS for layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            font-weight: bold;
+        }
+        .navbar a {
+            color: white;
+            margin-left: 1em;
+            text-decoration: none;
+        }
+        .dashboard {
+            padding: 2em;
+        }
+        .product-selection, .checkout {
+            margin-top: 20px;
+        }
+        .product-selection select, .product-selection input, .checkout input {
+            padding: 8px;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .warning {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-<h1>Welcome, <?= htmlspecialchars($user['username']); ?>!</h1>
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">Alcohol POS</div>
+    <div>
+        <a href="#history">History Log</a>
+        <a href="dashboard.php">Home</a>
+        <a href="logout.php">Logout</a>
+    </div>
+</div>
 
-<h2>Buy Alcohol Products</h2>
-<form method="POST" action="">
-    <label for="product_id">Product:</label>
-    <select name="product_id" id="product_id" required>
-        <?php foreach ($products as $product): ?>
-            <option value="<?= $product['id']; ?>"><?= $product['name']; ?> - $<?= $product['price']; ?> (Stock: <?= $product['stock']; ?>)</option>
-        <?php endforeach; ?>
-    </select>
-    <br><br>
+<!-- Dashboard Section -->
+<div class="dashboard">
+    <h1>Point of Sale - Alcohol Products</h1>
 
-    <label for="quantity">Quantity:</label>
-    <input type="number" name="quantity" id="quantity" min="1" required>
-    <br><br>
+    <!-- Product Selection -->
+    <div class="product-selection">
+        <label for="product">Select Product:</label>
+        <select id="product">
+            <option value="1" data-price="15">Whiskey - $15</option>
+            <option value="2" data-price="10">Vodka - $10</option>
+            <option value="3" data-price="12">Rum - $12</option>
+            <option value="4" data-price="18">Tequila - $18</option>
+            <option value="5" data-price="14">Gin - $14</option>
+            <option value="6" data-price="16">Brandy - $16</option>
+            <option value="7" data-price="8">Wine - $8</option>
+            <option value="8" data-price="5">Beer - $5</option>
+            <option value="9" data-price="7">Cider - $7</option>
+            <option value="10" data-price="20">Champagne - $20</option>
+        </select>
 
-    <label for="payment">Payment Amount:</label>
-    <input type="number" name="payment" id="payment" min="1" required>
-    <br><br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" placeholder="Enter quantity">
+    </div>
 
-    <button type="submit" class="button">Purchase</button>
-</form>
+    <!-- Checkout Section -->
+    <div class="checkout">
+        <label for="payment">Payment Amount:</label>
+        <input type="number" id="payment" placeholder="Enter payment amount">
 
-<h2>Purchase History</h2>
-<table>
-    <tr>
-        <th>Username</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Total Amount</th>
-        <th>Payment</th>
-        <th>Date</th>
-    </tr>
-    <?php foreach ($history as $record): ?>
-        <tr>
-            <td><?= htmlspecialchars($record['username']); ?></td>
-            <td><?= htmlspecialchars($record['product_name']); ?></td>
-            <td><?= htmlspecialchars($record['quantity']); ?></td>
-            <td>$<?= htmlspecialchars($record['total_amount']); ?></td>
-            <td>$<?= htmlspecialchars($record['payment']); ?></td>
-            <td><?= htmlspecialchars($record['created_at']); ?></td>
-        </tr>
-    <?php endforeach; ?>
-</table>
+        <button onclick="processTransaction()">Checkout</button>
 
-<h2>Database Joins</h2>
-<button onclick="window.location.href='join_view.php?join=left'" class="button">View Left Join</button>
-<button onclick="window.location.href='join_view.php?join=right'" class="button">View Right Join</button>
-<button onclick="window.location.href='join_view.php?join=union'" class="button">View Union Join</button>
+        <div id="message" class="warning"></div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to handle POS logic
+    function processTransaction() {
+        const product = document.getElementById("product");
+        const productId = product.value;
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const payment = parseFloat(document.getElementById("payment").value);
+        const message = document.getElementById("message");
+
+        // Validate inputs
+        if (isNaN(quantity) || isNaN(payment) || quantity <= 0 || payment <= 0) {
+            message.style.color = 'red';
+            message.innerText = 'Please enter valid quantity and payment amount.';
+            return;
+        }
+
+        // Send transaction data to server
+        fetch('process_transaction.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `product_id=${productId}&quantity=${quantity}&payment=${payment}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                message.style.color = 'green';
+                message.innerText = `Transaction successful! Change: $${data.change.toFixed(2)}`;
+            } else {
+                message.style.color = 'red';
+                message.innerText = data.message;
+            }
+        })
+        .catch(error => {
+            message.style.color = 'red';
+            message.innerText = 'Error processing transaction. Please try again.';
+        });
+    }
+</script>
 
 </body>
 </html>
