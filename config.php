@@ -1,7 +1,7 @@
 <?php
 
 define('DB_SERVER', 'localhost');
-define('DB_NAME', 'BA');
+define('DB_NAME', 'ayuno');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 
